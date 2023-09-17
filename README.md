@@ -10,5 +10,15 @@ To do this we used the following commands in the CLI.
 3. Configure access for ping, http, https and ssh.
 4. Set the IP address to 10.123.0.1/24
 5. Exit
-To verify the configuration of port2, "show sys int port2" was used. 
+6. Verified the configuration of port2, "show sys int port2" was used.
 <put pic here>
+
+After this we configured a DHCP server for the LAN interface.
+1. By using "conf sys dhcp server", we were able to access the DHCP Server settings and set the deafult gateway to 10.128.0.1. and the subnet mask to 255.255.255.0.
+2. We assigned the interface to port2 and defined the IP range.
+3. Specified the start and end IP addresses.
+4. Exited the configuration.
+5. Confirmed the DCHP server settings by using "show sys dchp sever 1" in the terminal.
+   <Picture here>
+
+   The next step was to configure the Windows 10 workstation and confirm the DCHP lease.
