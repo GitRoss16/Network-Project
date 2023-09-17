@@ -5,10 +5,10 @@ We began with a pre-configured WAN-Cloud and WAN-Switch in GNS3. We added a Fort
 
 Next we set up a Virtual LAN interface using PuTTY.
 To do this we used the following commands in the CLI.
-conf sys int 
-edit port 2 
-Configure access for ping, http, https and ssh.
-Set the IP address to 10.123.0.1/24
-Exit
+1. conf sys int 
+2. edit port 2 
+3. Configure access for ping, http, https and ssh.
+4. Set the IP address to 10.123.0.1/24
+5. Exit
 To verify the configuration of port2, "show sys int port2" was used. 
 <put pic here>
