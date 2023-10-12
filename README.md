@@ -239,7 +239,73 @@ We then saved a backup of the firewall configuration and saved it to a folder on
  To conclude the last steps of Stage 1, we performed another backup of the firewall configuration to ensure the application of these changes were made. After this, our network topology looked a little something like 
  this.
 
- ![Phase11](https://github.com/GitRoss16/Network-Project/assets/144251501/a7831216-744f-42a8-be64-eb6275308899)
+![Stage2 Start](https://github.com/GitRoss16/Network-Project/assets/144251501/09189b2f-63fc-4354-8f1f-07ac9af8ea9e)
+
+# Stage 2: Domain Setup
+
+During this stage we added more devices and linked them up, prepared a WIN2012r2 Server for the "Actice Directory Domain Services" server role and installed it, created new AD user accounts, prepared the WIN10 from stage 1 to join the domain and joined it, and added a few other small details. 
+
+After turning the WIN2012r2 server on, connecting it, manuevering through the license agreement, we set up a a password for the admin account and logged in. Next we had to set the static IP address in Server Manager.
+To get here we followed this path. Server Manager > Local Server > Ethernet instance > Right click on eth0 > properties > Internet protocol version 4 (TCP/IPv4) > Properties > input the following..
+
+### Setting the static IP address
+
+- ip address: 10.128.0.10
+- subnet mask: 255.255.255.0
+- default gateway: 10.128.0.1
+- DNS1: 127.0.0.1
+- DNS2: 10.128.0.1
+
+Using a ping test, we were able to ensure that there was network connectivity. Commands as follows
+
+- LAN - ping 10.128.0.1
+- WAN - ping 8.8.8.8
+- DNS - ping google.com
+
+From here he configured the Network Time Protocol (NTP). This would set the timezone and sync with the LAN interface IP on the firewall. The path we used as follows.
+
+### Configuring NTP 
+
+Right click time in bottom right of screen > select "Adjust date/time" > Select "Change date and time..." > Change time zone to UTC-6:00 Central Time (U.S. & Canada) and select OK > Select the "Internet Time" tab and select "Change Settings" > In the server box, type in 10.128.0.1 and select the "Update now" box. Ensure the text below reads successful.
+
+### Change the hostname 
+
+Navigate to server manager > local server > select "computer name" > and type "dc" in the Computer description box, then select the "Apply box and then the "Change..." box >   
+
+### Installing Active Directory Domain Services 
+
+Within the WIN2012r2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![Stage2 End](https://github.com/GitRoss16/Network-Project/assets/144251501/a09c3701-465d-4a1d-823f-613e90f38f2a)
+
 
 After this we configured a DHCP server for the LAN interface.
 1. By using "conf sys dhcp server", we were able to access the DHCP Server settings and set the deafult gateway to 10.128.0.1. and the subnet mask to 255.255.255.0.
