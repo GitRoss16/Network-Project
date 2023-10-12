@@ -1,17 +1,245 @@
 # Network-Project
- ###Ths is a project where I created a network for a small business###
-We began with a pre-configured WAN-Cloud and WAN-Switch in GNS3. We added a FortiGate firewall, two additional switches, and a Windows 10 workstation to the network.
-![Phase11](https://github.com/GitRoss16/Network-Project/assets/144251501/a7831216-744f-42a8-be64-eb6275308899)
+## This is a project where my team and I created a network for a small business
+The client requested the network be secure, with an internal Windows domain, internal Microsoft IIS Webserver, internal Windows 10 workstation, a public webserver, public FTP server, a LAN on 10.128.0.0/24, DMZ on 10.128.10.0/24, and GUEST network on 10.128.99.0/24.
+We began with a pre-configured WAN-Cloud and WAN-Switch in GNS3. 
 
-Next we set up a Virtual LAN interface using PuTTY.
-To do this we used the following commands in the CLI.
-1. conf sys int 
-2. edit port 2 
-3. Configure access for ping, http, https and ssh.
-4. Set the IP address to 10.123.0.1/24
-5. Exit
-6. Verified the configuration of port2, "show sys int port2" was used.
-<put pic here>
+![Stage 0](https://github.com/GitRoss16/Network-Project/assets/144251501/32f89193-c0ed-4663-8261-63e1a66f9da6)
+
+
+# Stage 1: Network Setup
+
+During this stage we added 2 ethernet switches, a FortiNet firewall (FortiGate), and configured a LAN network within it. Connected a firewall graphical user interface from the WIN10 machine, and then completed the setup of the network though that firewall GUI by connecting all of these components together. Connections are as follows.
+
+- WAN port on firewall to WAN-SWITCH
+- LAN port on firewall to LAN-SWITCH
+- DMZ port on firewall to DMZ-SWITCH
+- WIN10 workstation to LAN-SWITCH.
+  
+We set up the Virtual LAN interface using CLI. Commands as follows.
+
+- conf sys int
+- edit port2
+- set allowaccess ping http https ssh
+- set ip 10.128.0.1/24
+- end
+
+We then verified the configuration by using the command, "show sys int port2".
+
+We configured the DHCP server for the LAN interface. This would allow the firewall to perform DHCP services on the LAN network.
+
+Knowing that the DHCP pool scope would be 10.128.0.100-199, we again utilized the CLI to input commands. Commands as follows.
+
+- conf sys dhcp server
+- edit 1
+- set default-gateway 10.128.0.1
+- set netmask 255.255.255.0
+- set interface port2
+- config ip-range
+- edit 1
+- set start-ip 10.128.0.100
+- set end-ip 10.128.0.199
+- next
+- end
+- next
+- end
+
+We then verified the configuration by using the command, "show sys dhcp server 1". 
+
+Our next objectice was adding the WIN10 workstation
+
+First we verified that the WIN10 had leased a DHCP address from the LAN network. Again using CLI. 
+
+- ipconfig /all
+
+This showed us that we had a valid IP range of 10.128.0.[100-199]/24, a gateway of 10.128.0.1, and DHCP server at 10.128.0.1.
+
+To test their connectivity, we used a ping test for each. Commands as follows.
+
+- For the LAN: ping 10.128.0.1
+- For the WAN: ping 8.8.8.8
+- For the DNS: ping google.com
+
+These ping test's resulted in a succesful LAN connection, but was unsuccesul for the WAN and DNS.
+
+Connecting to the firewall GUI required us to navigate to "http://10.128.0.1/", login with our credentials, and make various changes to the FortiGate set up prompt. Changes as follows.
+
+- hostname = firewall
+- timezone = -6:00 Central Time (U.S.& Canada)
+- setup device as local NTP server = enabled
+- list on interfaces = port2, port4
+- idle timeout = 60
+- autofile system check = enabled
+
+We then saved a backup of the firewall configuration and saved it to a folder on our WIN10 machine. After saving, we rebooted the system in order to make the changes.
+
+ The last step within stage 1 was the longest but really started connecting all the peices together.
+ Per our clients request, we had to configure the following. (All of this was done on the 'http://10/128.0.1/' webserver)
+
+ - 10.128.0.0/24 as the LAN network
+ - 10.128.99.0/24 as the GUEST network
+ - 10.128.10.0/24 as the DMZ network
+ 
+ Within the Network > Interfaces tab, the following changes were made.
+
+ ### Port1 WAN
+  
+ - edit port1
+ - alias = WAN
+ - role = WAN
+ - APPLY CHANGES
+ 
+ ### Port2 LAN
+
+ - edit port2
+ - alias = LAN
+ - role = LAN
+ - create address object matching subnet = enabled
+ - administrative access = https, http, ping, ssh
+ - dns server = same as interface IP
+ - expand adanced
+ - ntp server = local
+ - APPLY CHANGES
+ 
+  ### Port3 GUEST
+
+ - edit port3
+ - alias = GUEST
+ - role = LAN
+ - ip/network mask = 10.128.99.1/24
+ - create address object matching subnet = enabled
+ - administrative access = ping, ssh
+ - dhcp server = enabled
+ - dns server = same as interface ip
+ - expand advanced
+ - ntp server = local
+ - APPLY CHANGES
+ 
+ ### Port4 DMZ
+
+ - edit port4
+ - alias = DMZ
+ - role = DMZ
+ - ip/network mask = 10.128.10.1/24
+ - create address object matching subnet = enabled
+ - administrative access = ping
+ - APPLY CHANGES
+
+ To enable the DNS, we navigated to System > Feature Visibility, and made the following changes.
+
+ - dns database = enabled
+ - APPLY CHANGES
+   
+ To configure the firewall system DNS settings, we nevigated to Network > DNS and made the following changes.
+
+ ### DNS 
+
+ - dns servers = specify
+ - primary dns server = 8.8.8.8
+ - secondary dns server = 1.1.1.1
+ - APPLY CHANGES
+
+ Within Network > DNS Servers...
+
+ ### LAN DNS 
+ - create new
+ - interface = LAN (port2)
+ - mode = recursive
+ - APPLY CHANGES
+
+ ### GUEST DNS
+
+ - create new
+ - interface = GUEST (port3)
+ - mode = recursive
+ - APPLY CHANGES
+
+ ### DMZ DNS
+
+ - create new
+ - interface = DMZ (port4)
+ - mode = recursive
+ - APPLY CHANGES
+
+ Within the Policy & Objects > Services tab, we configured the following service objects
+
+ ### LAN Services
+
+ - create new > service group
+ - name = LAN-services-group
+ - members = ALL_ICMP, NTP, RDP, SSH, WEB ACCESS, WINDOWS AD
+
+ ### DMZ Services
+
+ - create new > service group
+ - name = DMZ-services-group
+ - members = ALL_ICMP, FTP, RDP, SSH, WEB ACCESS
+
+ Finally, we navigated to the Policy & Objects > IPv4 Policy tab to configure the remaining firewall rules.
+
+ ### LAN-to-WAN policy 
+
+ - create new 
+ - name = LAN-to-WAN
+ - incoming interface = LAN
+ - outgoing interface = WAN
+ - source = port2 address
+ - destination = all
+ - service = all
+ - NAT = enabled
+ - APPLY CHANGES
+
+ ### DMZ-to-WAN policy
+
+ - create new
+ - name = DMZ-to-WAN
+ - incoming interface = DMZ
+ - outgoing interface = WAN
+ - source = port4 address
+ - destination = all
+ - service = all
+ - NAT = enabled
+ - APPLY CHANGES
+
+ ### LAN-to-DMZ policy 
+
+ - create new 
+ - name = LAN-to-DMZ
+ - incoming interface = LAN
+ - outgoing interface = DMZ
+ - source = port2 address
+ - destination = port4 address
+ - service = DMZ-services-group
+ - NAT = disabled
+ - APPLY CHANGES
+
+ ### DMZ-to-LAN policy
+
+ - create new
+ - name = DMZ-to-LAN
+ - incoming interface = DMZ 
+ - outgoing interface = LAN
+ - source = port4 address 
+ - destination = port2 address 
+ - service = LAN-services-group
+ - NAT = disabled
+ - APPLY CHANGES
+
+ ### WAN-to-DMZ policy 
+
+ - create new
+ - name = WAN-to-DMZ
+ - incoming interface = WAN
+ - outgoing interface = DMZ
+ - source = all
+ - destination = port4 address
+ - service = DMZ-services-group
+ - NAT = disabled
+ - APPLY CHANGES
+
+ To conclude the last steps of Stage 1, we performed another backup of the firewall configuration to ensure the application of these changes were made. After this, our network topology looked a little something like 
+ this.
+
+ ![Phase11](https://github.com/GitRoss16/Network-Project/assets/144251501/a7831216-744f-42a8-be64-eb6275308899)
 
 After this we configured a DHCP server for the LAN interface.
 1. By using "conf sys dhcp server", we were able to access the DHCP Server settings and set the deafult gateway to 10.128.0.1. and the subnet mask to 255.255.255.0.
