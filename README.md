@@ -274,7 +274,30 @@ Navigate to server manager > local server > select "computer name" > and type "d
 
 ### Installing Active Directory Domain Services 
 
-Within the WIN2012r2
+Within server manager of the WIN2012r2, we navigated to... local server > add roles and features and began the configuration process within the wizard. Steps as follows
+
+- For the first 2 pages, "next" was selected to default options were used
+- After selecting our server from the server pool, we selected next on the third page
+- Checked the box next to "Active Directory Services Domain" on server roles, and then clicked "Add Features on the pop-up screen. Then next
+- Next
+- Next
+- And finally, select the install button
+
+ Here, the installation process would begin. Navigating to the server manager notifications tab, we were able to see the progress. This notification is indicated by a yellow caution symbol. Next steps taken were...
+
+ - Select the "Promote this server to a domain controller" link
+ - Select the option to "Add new forest" and then we typed in the domain name of "widgets.localdomain" that was desired by our client.
+ - Next was selected for the remaining pages within the wizard, thus keeping all configuration options as default.
+ - The wizard checked to ensure all prerequisites were met, and the the "Install" button was selected.
+ 
+  After this, the server rebooted and the objective was completed successfully.
+
+ ## Creating new active directory user accounts
+
+ For this section, our objective was to create multiple user accounts, assign them their permissions, and then add them to the "domain admins" security group. Here's how...
+
+ - Within server manager, we navigated to tools > Active directory users and computers > users > right click and select new > user
+ - The information for the accounts was filled in for each individual 
 
 
 
