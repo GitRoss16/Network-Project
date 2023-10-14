@@ -283,21 +283,45 @@ Within server manager of the WIN2012r2, we navigated to... local server > add ro
 - Next
 - And finally, select the install button
 
- Here, the installation process would begin. Navigating to the server manager notifications tab, we were able to see the progress. This notification is indicated by a yellow caution symbol. Next steps taken were...
+Here, the installation process would begin. Navigating to the server manager notifications tab, we were able to see the progress. This notification is indicated by a yellow caution symbol. Next steps taken were...
 
- - Select the "Promote this server to a domain controller" link
- - Select the option to "Add new forest" and then we typed in the domain name of "widgets.localdomain" that was desired by our client.
- - Next was selected for the remaining pages within the wizard, thus keeping all configuration options as default.
- - The wizard checked to ensure all prerequisites were met, and the the "Install" button was selected.
+- Select the "Promote this server to a domain controller" link
+- Select the option to "Add new forest" and then we typed in the domain name of "widgets.localdomain" that was desired by our client.
+- Next was selected for the remaining pages within the wizard, thus keeping all configuration options as default.
+- The wizard checked to ensure all prerequisites were met, and the the "Install" button was selected.
  
-  After this, the server rebooted and the objective was completed successfully.
+After this, the server rebooted and the objective was completed successfully.
 
- ## Creating new active directory user accounts
+## Creating new active directory user accounts
 
- For this section, our objective was to create multiple user accounts, assign them their permissions, and then add them to the "domain admins" security group. Here's how...
+For this section, our objective was to create multiple user accounts, assign them their permissions, and then add them to the "domain admins" security group. Here's how...
 
- - Within server manager, we navigated to tools > Active directory users and computers > users > right click and select new > user
- - The information for the accounts was filled in for each individual 
+- Within server manager, we navigated to tools > Active directory users and computers > users > right click and select new > user > filled in info > next > right click the new user and select "Add to a group..." > type 
+in group name in the box and select check names to underline it > select ok
+This process was repeated again for each of the new user accounts. We configured 2 accounts per user. One being a standrard user account, and one being an admin account with escalated privileges.
+
+## Preparing the WIN10 to join the domain
+
+We began by changing the hostname to "WIN10", then changed the primary DNS server to the IP for the domain controller, and finally set the NTP to sync with the widgets.localdomain. We used the same steps as the ones 
+performed at the beginning of the stage to setup the domain.
+
+To join the WIN10, we used an admin account to join the domain within the control panel > system and security > system > computer name, domain, and workgroup settings > change settings > under computer name tab, click change > under member of, click domain and type the domain name (ours being widgets.localdomain) and select ok > and then ok again. Then we rebooted.
+
+We then logged in with a standard user account to verify that the changes were made to our account.
+
+## Setting the desktop background with GPO 
+
+Here, we set a background for the domain user accounts. Here's how...
+
+server manager > tools > group policy manager > widgets.localdomain > domains > right click deafault domain policy > edit > user configuration > policies > admin templates > desktop > desktop wallpaper and assign name (ours was c:\windows\web\wallpaper\windows\img.0.jpg) added into the comment and wallpaper name boxes > apply > ok 
+
+We then logged out and logged back in where we were able to verify that our wallpaper had been changed. Since ours was successful, we did not have to use "gpupdate" or "gpresult" to troubleshoot, but they can be used if problems occur.
+
+This was the completion of Stage 2. 
+
+# Stage 3: IIS Setup 
+
+
 
 
 
