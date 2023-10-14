@@ -318,40 +318,33 @@ server manager > tools > group policy manager > widgets.localdomain > domains > 
 We then logged out and logged back in where we were able to verify that our wallpaper had been changed. Since ours was successful, we did not have to use "gpupdate" or "gpresult" to troubleshoot, but they can be used if problems occur.
 
 This was the completion of Stage 2. 
-
-# Stage 3: IIS Setup 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
 ![Stage2 End](https://github.com/GitRoss16/Network-Project/assets/144251501/a09c3701-465d-4a1d-823f-613e90f38f2a)
+
+# Stage 3: IIS Setup
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 After this we configured a DHCP server for the LAN interface.
