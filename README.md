@@ -356,7 +356,29 @@ Using server manager, our step progression went...
 - Added http://localhost/ to our trusted sites list within the browsers settings menu
 - Verified that the site was up and working when navigating to the address above
 
-## V
+## Creating a test webpage on IIS 
+
+We needed to make a testing webpage on IIS to make sure we could access it through the browser of the WIN10 workstation
+
+Using notepad, we created an HTML file with the following text...
+
+- <html>
+- <head> 
+- <title> IIS test validation website</title>
+- </head> 
+- <body>
+- <p> test website validation completed</p>
+- </body>
+- </html>
+
+We then saved this file to our documents folder and named it "test.html", then copied the file to the "c:\inetpub\wwwroot\test.html", and test the local browser in IIS at "http://localhost/test.html".
+
+Then, using the WIN10 WS, navigated to "http://iis.widgets.localdomain/test.html" to verify. IIS setup was a success.
+
+![image](https://github.com/GitRoss16/Network-Project/assets/144251501/e74ebc62-6fd4-4a54-8f6c-59055f2c1feb)
+
+
+
 
   
 
