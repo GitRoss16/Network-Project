@@ -323,6 +323,42 @@ This was the completion of Stage 2.
 
 # Stage 3: IIS Setup
 
+In this stage, we built an IIS webserver on the WIN2012r2 server, then joined the server to the domain. 
+
+## Preparing the WIN2012r2 server
+
+This process was fairly simple as it required many of the same steps as the setup for the domain controller. Our requirements were as follows...
+
+- Give static IP of 10.128.0.80
+- Set the DC as primary DNS (10.128.0.10)
+- Firewall LAN IP as secondary DNS (10.128.0.1)
+- Sync NTP with dc.widgets.localdomain
+- Change the hostname to iis 
+- Join the server to the widgets domain
+
+## Installing the IIS role 
+
+Using server manager, our step progression went...
+
+- Manage
+- Add roles and features
+- (within the first page of the wizard) click next 
+- Select role-based or feature-based installation, then next
+- Select appropriate server from the server pool, then next
+- On the server roles page, select Web Server (IIS), then next
+- We used defaults settings for the remaining pages
+- On the verificatin page, we selected "restart the destination server automatically if required"
+- After confirming our selections were correct, "install" was selected.
+
+  Once the installtion had finished, we closed out the page, and went on to verify that the webserver worked. To do this...
+
+- Opened our browser (Internet Explorer)
+- Added http://localhost/ to our trusted sites list within the browsers settings menu
+- Verified that the site was up and working when navigating to the address above
+
+## V
+
+  
 
 
 
@@ -331,10 +367,6 @@ This was the completion of Stage 2.
 
 
 
-
-
-
-# Stage 3: IIS Setup
 
 
    
