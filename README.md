@@ -362,14 +362,8 @@ We needed to make a testing webpage on IIS to make sure we could access it throu
 
 Using notepad, we created an HTML file with the following text...
 
-- " <html> "
-- " <head> "
-- " <title> IIS test validation website</title> "
-- " </head> "
-- " <body> "
-- " <p> test website validation completed</p> "
-- " </body> "
-- " </html> "
+![Test page for IIS](https://github.com/GitRoss16/Network-Project/assets/144251501/75bba104-e4b4-4490-918a-13a945a6aa72)
+
 
 We then saved this file to our documents folder and named it "test.html", then copied the file to the "c:\inetpub\wwwroot\test.html", and test the local browser in IIS at "http://localhost/test.html".
 
