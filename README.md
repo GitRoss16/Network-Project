@@ -429,6 +429,26 @@ This is what was added into nano (if trying to replicate, ensure the proper tabb
 
 ![image](https://github.com/GitRoss16/Network-Project/assets/144251501/c76d131a-850d-4260-bcef-20e614a9efcd)
 
+We saved and then exited back to the terminal in order to finish the config file...
+
+- cp /var/www/html/dokuwiki/ .htaccess{.dist,}
+- chwon -R www-data:www-data /var/www/html/dokuwiki
+- apache2ctl -t
+- a2dissite 000-default.conf
+- a2ensite dokuwiki.conf
+- systemctl reload apache2
+
+## Verifying access to the installer
+
+In this step we logged onto the DC, opened DNS manager, and added a new host (A) record to the widgets.localdomain domain under the "Forward Lookup Zones" tab. We assigned the following credentials to this host.
+
+- name = www
+- ip address = 10.128.10.80
+- create associated pointer (PTR) record = unchecked
+- add host
+
+We then opened the dokuwiki installer URL in our browser on the WIN10 WS at "http://www.widgets.localdomain/install.php 
+
 
 
 
