@@ -371,11 +371,63 @@ Then, using the WIN10 WS, navigated to "http://iis.widgets.localdomain/test.html
 
 ![image](https://github.com/GitRoss16/Network-Project/assets/144251501/e74ebc62-6fd4-4a54-8f6c-59055f2c1feb)
 
+# Stage 4: LAMP setup
 
+In this stage, we built a LAMP webserver on an Ubuntu server on our DMZ network. Our client requested the server name to be "www.widgets.localdomain"
 
+## Preparing the Ubuntu server 
 
+We began by starting the Ubuntu server and logging in. It had no network connection yet since it couldn't lease DHCP address because there is no DHCP server for the DMZ network. So, we set a static IP...
+
+- IP = 10.128.10.80
+- Netmask = 255.255.255.0
+- Gateway = 10.128.10.1
+- DNS = 10.128.0.10, 10.128.10.1
+
+To make these changes, we navigated to the...
+
+- Settings menu
+- Wired connecting > Wired settings
+- Network > settings gear in the "wired" tab
+- IPv4 tab > selected manual > input the correct address information > selected apply
+
+We then navigated to the terminal within Ubuntu and used the following commands to update the host file...
+
+- 127.0.0.1 localhost.localdomain localhost
+- 10.128.10.80 www.widgets.localdomain www
   
+We then set the hostname with hostnamectl using...
 
+- hostnamectl set-hostname www
+- hostnamectl
+
+After this we updated the packages on the server with the following commands...
+
+- apt update -y
+- apt upgrade -y (this one took roughly 45 minutes to complete) 
+- apt dist-upgrade -y
+- apt autoremove -y
+- apt autoclean -y
+- systemctl reboot
+
+## Installing DokuWiki
+
+This step required us to login as root within the terminal. The following commands were used...
+
+- apt install php php-gd php-xml php-json -y
+- systemctl enable --now apache2
+- ufw allow Apache
+- wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+- mkdir /var/www/html/dokuwiki
+- tar xzf dokuwiki-stable.tgz -C /var/www/html/dokuwiki/ --strip-components=1
+
+## Creating the config file for the wiki 
+
+nano was used for this step. The command to access nano was... nano /etc/apache2/sites-available/dokuwiki.conf 
+
+This is what was added into nano (if trying to replicate, ensure the proper tabbed spacing is used) 
+
+![image](https://github.com/GitRoss16/Network-Project/assets/144251501/c76d131a-850d-4260-bcef-20e614a9efcd)
 
 
 
