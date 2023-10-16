@@ -490,14 +490,92 @@ We then used the terminal to find the WAN IP of the firewall using the method "s
 
 We then used our home computer to access the wiki from the webbrowser at "http://wan-ip-of-firewall/", and completing the final step of Stage 4.
 
+![image](https://github.com/GitRoss16/Network-Project/assets/144251501/f767f42a-b528-4a9e-8bc7-c786ae5d9268)
+
+
 # Stage 5: FTP Setup
 
-In this stage, we built the FTP server on the WIN2012r2 server in the DMZ Network. Our client requested the name of this server be "ftp.widgets.localdomain"
+In this stage, we built the FTP server on the WIN2012r2 server in the DMZ Network. Our client requested the name of this server be "ftp.widgets.localdomain". The beginning of this stage had the same inital steps as our last stage, just different information which was...
+
+- hostname = ftp
+- ip address = 10.128.10.21
+- subnet mask = 255.255.255.0
+- default gateway = 10.128.10.1
+- DNS1 = 10.128.0.10
+- DNS2 = 10.128.10.1
+- sync ntp with: dc.widgets.localdomain
+- join the widgets domain
+
+## Installing the FTP Service
+
+To install the FTP Service we navigated to... Server Manager > Manage > Add roles and features > Role-based or feature-based installation > Selected the proper server from server pool > Selected Web Server (IIS) > Next button until we reach the Role Services page > select FTP Server > next > install > and reboot
+
+This completed Stage 5
+
+![image](https://github.com/GitRoss16/Network-Project/assets/144251501/d7ca35a6-50d7-417b-a44e-06650575e27e)
+
+# Stage 6: Hardening the Environment 
+
+Stage 6 was an opportunity for us to explore the various options for hardening the firewall, WIN10 WS, WIN2012r2 Servers, and our Ubuntu Server. Though they were not implemented into the system, we put them onto the wiki.
 
 
 
+# Stage 7 - The Bonus Stage: Scanning the Environment
 
+For this stage, we used Greenbone to scan the WAN interface for the Widgets network environment.
+
+## Creating a credential record 
+
+Using the browser from a home computer, we navigated to the Greenbone URL provided > Configuration tab > Credentials > New Credential and then used the following information...
+
+- name = <team>-fortigate-ssh-creds #ex: alpha-fortigate-ssh-creds
+- #unless you've changed it
+- username = admin
+- password = Passw0rd!
+- #save
+
+## Creating a target record 
+
+Configuration > Targets > New Target and used the following info in the appropriate boxes...
+
+- name = <team>-fortigate-wan #ex: alpha-fortigate-wan
+- hosts.manual = fortigate-wan-ip
+- allow simultaneous... = no
+- ssh = select the credential record you create
+- #save
+
+## Creating a task record 
+
+Scans > Tasks > New Task and input following information...
+
+- name = <team>-fortigate-task #ex: alpha-fortigate-task
+- scan targets = the tatget record you created
+- #save
+
+After checking with our Senior Engineer, we were given the go ahead to scan the target. To do this, we navigated to the tasks page, located the task, and then ran it.
    
+All stages were now complete and it was time to document the findings of our target scan on our Wiki page.
+
+
+
+# Overview 
+
+In this scenario, my team and I were able to build...
+
+- A SMB (small/medium business) network, with a LAN, DMZ, and Guest network.
+- A Windows domain enviornment.
+- IIS Webserver
+- Windows FTP Server
+- WIN10 Workstation
+- LAMP Webserver ruunning on Ubuntu (also hosted our Wiki)
+- Fortigate firewall with a virtual IP for a DMZ Webserver. 
+
+
+
+
+
+
+
 
 
 
