@@ -464,11 +464,58 @@ We then logged into the WIN10 and opened the the wiki URL (http://widgets.locald
 
 ![image](https://github.com/GitRoss16/Network-Project/assets/144251501/2636a313-3fb3-45ff-8a08-35d940095776)
 
+Looking back through those start page notes (section provided down below), we discovered there were still two things we needed to do, and that was to create 2 additional hosts on the DC. This would be done the same way we created the "www.widgets.localdomain". The new hosts would be...
 
+- FQDN = firewall.widgets.localdomain
+- a-record created = not yet
+- FQDN = iis.widgets.localdomain
+- a-record created = not yet
 
+Once those were created, we went back into the wiki and updated the notes to display the correct information.
 
+## Setup VIP on firewall
+
+On the WIN10 WS, we navigated to the FortiGate webserver previously, navigated to Policy & Objects > Virtual IPs > Create New > Virtual IP and assigned the following credentials to the new VIP
+
+- name = www_tcp_80
+- interface = WAN
+- mapped IP = 10.128.10.80
+- port forwarding = enabled
+- external port service = 80
+- map to port = 80
+
+Navigated to IPv4 Policy (within the Policy & Objects tab) and editd the " WAN-to-DMZ" firewall policy destination to "www_tcp_80".
+
+We then used the terminal to find the WAN IP of the firewall using the method "show sys int (space) then press and hold shift and the ? key" to look for and find the port1 address of the WANs public address of the firewall.
+
+We then used our home computer to access the wiki from the webbrowser at "http://wan-ip-of-firewall/", and completing the final step of Stage 4.
+
+# Stage 5: FTP Setup
+
+In this stage, we built the FTP server on the WIN2012r2 server in the DMZ Network. Our client requested the name of this server be "ftp.widgets.localdomain"
 
 
 
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
