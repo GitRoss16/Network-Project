@@ -447,8 +447,22 @@ In this step we logged onto the DC, opened DNS manager, and added a new host (A)
 - create associated pointer (PTR) record = unchecked
 - add host
 
-We then opened the dokuwiki installer URL in our browser on the WIN10 WS at "http://www.widgets.localdomain/install.php 
+We then opened the dokuwiki installer URL in our browser on the WIN10 WS at "http://www.widgets.localdomain/install.php" and used the following credentials...
 
+- wiki name = Widgets Network Documentation Wiki
+- superuser = wikiadmin
+- real name = service account
+- e-mail = wikiadmin@widgets.localdomain
+- password = Passw0rd!
+- initial ACL policy = Public Wiki
+
+We then renamed the file on www within the terminal using...
+
+- mv /var/www/html/dokuwiki/install.php /var/www/html/dokuwiki/install.php.removed
+
+We then logged into the WIN10 and opened the the wiki URL (http://widgets.localdomain/) and logged in. We created a start page with the following information
+
+![image](https://github.com/GitRoss16/Network-Project/assets/144251501/2636a313-3fb3-45ff-8a08-35d940095776)
 
 
 
