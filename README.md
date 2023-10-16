@@ -516,8 +516,7 @@ This completed Stage 5
 
 # Stage 6: Hardening the Environment 
 
-Stage 6 was an opportunity for us to explore the various options for hardening the firewall, WIN10 WS, WIN2012r2 Servers, and our Ubuntu Server. Though they were not implemented into the system, we put them onto the wiki.
-
+Stage 6 was an opportunity for us to explore the various options for hardening the firewall, WIN10 WS, WIN2012r2 Servers, and our Ubuntu Server. Though they were not all implemented into the system, we put our findings  on the wiki page.
 
 
 # Stage 7 - The Bonus Stage: Scanning the Environment
